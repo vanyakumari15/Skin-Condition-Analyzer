@@ -1,0 +1,27 @@
+services:
+  # Flask Backend
+  - type: web
+    name: skinanalyzer-backend
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: MONGODB_URI
+        sync: false
+      - key: SECRET_KEY
+        sync: false
+      - key: MODEL_GDRIVE_ID
+        sync: false
+      - key: DATABASE_NAME
+        value: skinanalyzer
+
+  # React Frontend
+  - type: web
+    name: skinanalyzer-frontend
+    runtime: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

@@ -7,3 +7,5 @@ numpy
 reportlab
 pymongo
 python-dotenv
+gdown
+gunicorn

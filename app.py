@@ -16,12 +16,30 @@ from database_hybrid import db
 import config
 
 # --- KERAS 3 SETUP ---
-import os
-os.environ["KERAS_BACKEND"] = "tensorflow" # Explicitly use TensorFlow
+os.environ["KERAS_BACKEND"] = "tensorflow"
 
 import keras
 from keras.layers import InputLayer, Rescaling
 from keras.applications.efficientnet import preprocess_input
+
+# --- AUTO-DOWNLOAD MODEL IF NOT PRESENT ---
+def download_model_if_needed():
+    model_path = config.Config.MODEL_PATH
+    if not os.path.exists(model_path):
+        gdrive_id = os.getenv('MODEL_GDRIVE_ID', '')
+        if gdrive_id:
+            print(f"Model not found. Downloading from Google Drive...")
+            try:
+                import gdown
+                url = f"https://drive.google.com/uc?id={gdrive_id}"
+                gdown.download(url, model_path, quiet=False)
+                print("Model downloaded successfully!")
+            except Exception as e:
+                print(f"Failed to download model: {e}")
+        else:
+            print(f"ERROR: Model file '{model_path}' not found and no MODEL_GDRIVE_ID set.")
+
+download_model_if_needed()
 
 app = Flask(__name__)
 app.secret_key = config.Config.SECRET_KEY
