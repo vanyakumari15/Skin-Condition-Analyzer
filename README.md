@@ -45,7 +45,7 @@ A professional AI-powered web application for analyzing skin conditions using de
 
 ## 🚀 Installation
 
-1. **Clone or download the project**
+1. **Clone the Project**
 
 2. **Install dependencies:**
 ```bash (Skin_analyzer)
