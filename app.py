@@ -160,10 +160,11 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+FRONTEND_URL = os.environ.get('FRONTEND_URL', 'http://localhost:5173')
+
 @app.route('/')
 def home():
-    # Redirect to React frontend
-    return redirect('http://localhost:5173')
+    return redirect(FRONTEND_URL)
 
 @app.route('/api/register', methods=['POST'])
 def api_register():
@@ -199,7 +200,7 @@ def api_register():
 @app.route('/register', methods=['GET'])
 def register():
     # Redirect to React frontend
-    return redirect('http://localhost:5173/register')
+    return redirect(f'{FRONTEND_URL}/register')
 
 @app.route('/api/login', methods=['POST'])
 def api_login():
@@ -230,32 +231,32 @@ def check_auth():
 @app.route('/login', methods=['GET'])
 def login():
     # Redirect to React frontend
-    return redirect('http://localhost:5173/login')
+    return redirect(f'{FRONTEND_URL}/login')
 
 @app.route('/logout')
 def logout():
     # Redirect to React frontend
-    return redirect('http://localhost:5173')
+    return redirect(FRONTEND_URL)
 
 @app.route('/analyze')
 def analyze():
     # Redirect to React frontend
-    return redirect('http://localhost:5173/analyze')
+    return redirect(f'{FRONTEND_URL}/analyze')
 
 @app.route('/report')
 def report():
     # Redirect to React frontend
-    return redirect('http://localhost:5173/report')
+    return redirect(f'{FRONTEND_URL}/report')
 
 @app.route('/faq')
 def faq():
     # Redirect to React frontend
-    return redirect('http://localhost:5173/faq')
+    return redirect(f'{FRONTEND_URL}/faq')
 
 @app.route('/history')
 def history():
     # Redirect to React frontend
-    return redirect('http://localhost:5173/history')
+    return redirect(f'{FRONTEND_URL}/history')
 
 @app.route('/api/history')
 def api_history():
@@ -276,7 +277,7 @@ def api_history():
 @app.route('/profile')
 def profile():
     # Redirect to React frontend
-    return redirect('http://localhost:5173/profile')
+    return redirect(f'{FRONTEND_URL}/profile')
 
 @app.route('/api/predict', methods=['POST'])
 def api_predict():
