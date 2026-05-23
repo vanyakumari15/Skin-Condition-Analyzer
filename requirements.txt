@@ -1,5 +1,5 @@
-tensorflow==2.19.0
-keras==3.10.0
+tensorflow-cpu
+keras
 flask
 flask-cors
 pillow
@@ -9,3 +9,4 @@ pymongo
 python-dotenv
 gdown
 gunicorn
+werkzeug
