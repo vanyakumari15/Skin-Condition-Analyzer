@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+
+{% block title %}FAQ - SkinAnalyzer{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        background: white;
+    }
+
+    .faq-container {
+        max-width: 900px;
+        margin: 60px auto;
+        padding: 0 20px;
+    }
+
+    .faq-header {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    .faq-header h1 {
+        color: #495057;
+        font-size: 36px;
+        margin-bottom: 10px;
+        font-weight: 600;
+    }
+
+    .faq-header p {
+        color: #6c757d;
+        font-size: 16px;
+    }
+
+    .faq-list {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .faq-item {
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .faq-item:last-child {
+        border-bottom: none;
+    }
+
+    .faq-question {
+        width: 100%;
+        padding: 25px 30px;
+        background: white;
+        border: none;
+        text-align: left;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 16px;
+        color: #495057;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+
+    .faq-question:hover {
+        background: #f8f9fa;
+    }
+
+    .faq-question.active {
+        background: #f8f9fa;
+        color: #0d6efd;
+    }
+
+    .faq-icon {
+        font-size: 20px;
+        color: #6c757d;
+        transition: transform 0.3s;
+    }
+
+    .faq-question.active .faq-icon {
+        transform: rotate(180deg);
+        color: #0d6efd;
+    }
+
+    .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+        background: #f8f9fa;
+    }
+
+    .faq-answer.active {
+        max-height: 500px;
+        transition: max-height 0.5s ease-in;
+    }
+
+    .faq-answer-content {
+        padding: 20px 30px 30px 30px;
+        color: #6c757d;
+        line-height: 1.8;
+        font-size: 15px;
+    }
+
+    @media (max-width: 768px) {
+        .faq-container {
+            margin: 40px auto;
+        }
+
+        .faq-header h1 {
+            font-size: 28px;
+        }
+
+        .faq-question {
+            padding: 20px;
+            font-size: 15px;
+        }
+
+        .faq-answer-content {
+            padding: 15px 20px 25px 20px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="faq-container">
+    <div class="faq-header">
+        <h1>Common Questions</h1>
+        <p>Click on any question to see the answer</p>
+    </div>
+
+    <div class="faq-list">
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+                <span>How accurate is the AI skin analysis?</span>
+                <span class="faq-icon">▼</span>
+            </button>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    Our AI model has been trained on thousands of dermatological images and achieves approximately 95% accuracy in identifying common skin conditions. However, it's important to note that this tool is designed to provide preliminary insights and should not replace professional medical diagnosis. For any concerning skin conditions, we always recommend consulting with a qualified dermatologist.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+                <span>What types of skin conditions can be detected?</span>
+                <span class="faq-icon">▼</span>
+            </button>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    SkinAnalyzer can identify 23 different skin conditions including acne, eczema, psoriasis, rosacea, melanoma, atopic dermatitis, ringworm, warts, herpes, shingles, chicken pox, measles, cellulitis, urticaria (hives), and various other common dermatological conditions. Our AI analyzes skin texture, color, patterns, and other visual characteristics to provide accurate assessments.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+                <span>Is my personal data and photos secure?</span>
+                <span class="faq-icon">▼</span>
+            </button>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    Yes, absolutely. We take your privacy very seriously. All uploaded images are processed securely and are not stored on our servers after analysis. Your personal information is encrypted and protected according to industry-standard security protocols. We never share your data with third parties, and you have full control over your information. You can delete your account and all associated data at any time.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+                <span>How should I take photos for the best results?</span>
+                <span class="faq-icon">▼</span>
+            </button>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    For optimal results, follow these guidelines: 1) Use good natural lighting or bright indoor lighting. 2) Keep your camera steady and in focus. 3) Capture the affected area clearly, filling most of the frame. 4) Avoid shadows, glare, or reflections. 5) Include some surrounding healthy skin for context. 6) Take photos from a distance of 6-12 inches. 7) Ensure the image is not blurry or pixelated. Multiple angles can also help provide a more comprehensive analysis.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+                <span>How much does SkinAnalyzer cost?</span>
+                <span class="faq-icon">▼</span>
+            </button>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    SkinAnalyzer is currently free to use! We believe everyone should have access to preliminary skin health insights. Simply create a free account and you can start analyzing your skin conditions immediately. There are no hidden fees or subscription charges. Our mission is to democratize access to dermatological insights and empower individuals to take control of their skin health.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+                <span>Can I use SkinAnalyzer if I have sensitive skin?</span>
+                <span class="faq-icon">▼</span>
+            </button>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    Yes, SkinAnalyzer is a non-invasive, photo-based analysis tool that works for all skin types, including sensitive skin. Since the analysis is done through photographs, there's no physical contact or products applied to your skin. However, if you have sensitive skin and receive recommendations for treatments or products, always patch test new products and consult with a dermatologist before trying new skincare routines.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+                <span>How long does the analysis take?</span>
+                <span class="faq-icon">▼</span>
+            </button>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    The AI analysis is very fast! Once you upload your photo, the analysis typically takes only 3-5 seconds to complete. You'll receive instant results showing the top 3 most likely skin conditions with confidence percentages, detailed descriptions, and a downloadable PDF report. The entire process from upload to receiving your comprehensive report takes less than a minute.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+                <span>What if I'm not satisfied with my results?</span>
+                <span class="faq-icon">▼</span>
+            </button>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    If you're not satisfied with your results, we recommend: 1) Retaking the photo with better lighting and focus. 2) Trying different angles of the affected area. 3) Ensuring the skin condition is clearly visible in the image. Remember, SkinAnalyzer provides preliminary insights and should not replace professional medical advice. If you have concerns about your skin condition, we strongly encourage you to consult with a board-certified dermatologist who can provide a proper diagnosis and treatment plan.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function toggleFaq(button) {
+        const answer = button.nextElementSibling;
+        const isActive = button.classList.contains('active');
+        
+        // Close all other FAQs
+        document.querySelectorAll('.faq-question').forEach(q => {
+            q.classList.remove('active');
+            q.nextElementSibling.classList.remove('active');
+        });
+        
+        // Toggle current FAQ
+        if (!isActive) {
+            button.classList.add('active');
+            answer.classList.add('active');
+        }
+    }
+</script>
+{% endblock %}

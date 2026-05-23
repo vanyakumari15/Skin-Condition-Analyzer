@@ -1,0 +1,347 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - SkinAnalyzer{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        background: #f8f9fa;
+    }
+
+    .profile-container {
+        max-width: 1000px;
+        margin: 60px auto;
+        padding: 0 20px;
+    }
+
+    .profile-header {
+        background: white;
+        border-radius: 15px;
+        padding: 40px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        display: flex;
+        align-items: center;
+        gap: 30px;
+    }
+
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 48px;
+        color: white;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+
+    .profile-info {
+        flex: 1;
+    }
+
+    .profile-info h1 {
+        color: #212529;
+        font-size: 32px;
+        margin-bottom: 10px;
+    }
+
+    .profile-info p {
+        color: #6c757d;
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+
+    .profile-badge {
+        display: inline-block;
+        background: #e7f3ff;
+        color: #0d6efd;
+        padding: 6px 15px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        margin-top: 10px;
+    }
+
+    .profile-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+    }
+
+    .profile-card {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    .profile-card h2 {
+        color: #212529;
+        font-size: 22px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 0;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .info-row:last-child {
+        border-bottom: none;
+    }
+
+    .info-label {
+        color: #6c757d;
+        font-weight: 500;
+    }
+
+    .info-value {
+        color: #212529;
+        font-weight: 600;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .action-btn {
+        flex: 1;
+        padding: 12px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        text-align: center;
+        transition: all 0.3s;
+        border: none;
+        cursor: pointer;
+        font-size: 15px;
+    }
+
+    .btn-analyze {
+        background: #0d6efd;
+        color: white;
+    }
+
+    .btn-analyze:hover {
+        background: #0b5ed7;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+    }
+
+    .btn-edit {
+        background: #6c757d;
+        color: white;
+    }
+
+    .btn-edit:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .stat-box {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 32px;
+        font-weight: 700;
+        color: #0d6efd;
+        margin-bottom: 5px;
+    }
+
+    .stat-label {
+        color: #6c757d;
+        font-size: 13px;
+    }
+
+    .full-width {
+        grid-column: 1 / -1;
+    }
+
+    .quick-actions {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .quick-action-btn {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        text-decoration: none;
+        color: #495057;
+        font-weight: 600;
+        text-align: center;
+        transition: all 0.3s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .quick-action-btn:hover {
+        background: #e9ecef;
+        transform: translateY(-2px);
+        color: #0d6efd;
+    }
+
+    .quick-action-icon {
+        font-size: 32px;
+    }
+
+    @media (max-width: 768px) {
+        .profile-header {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .profile-content {
+            grid-template-columns: 1fr;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .quick-actions {
+            grid-template-columns: 1fr;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <!-- Profile Header -->
+    <div class="profile-header">
+        <div class="profile-avatar">
+            {{ user.username[0].upper() }}
+        </div>
+        <div class="profile-info">
+            <h1>{{ user.username }}</h1>
+            <p>📧 {{ user.email }}</p>
+            <p>📅 Member since {{ user.created_at[:10] if user.created_at else 'N/A' }}</p>
+            <span class="profile-badge">✓ Verified Account</span>
+        </div>
+    </div>
+
+    <!-- Profile Content -->
+    <div class="profile-content">
+        <!-- Account Information -->
+        <div class="profile-card">
+            <h2>📋 Account Information</h2>
+            <div class="info-row">
+                <span class="info-label">Username</span>
+                <span class="info-value">{{ user.username }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Email</span>
+                <span class="info-value">{{ user.email }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">User ID</span>
+                <span class="info-value">#{{ user.id }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Account Status</span>
+                <span class="info-value" style="color: #28a745;">Active</span>
+            </div>
+            <div class="action-buttons">
+                <button class="action-btn btn-edit" onclick="alert('Edit profile feature coming soon!')">Edit Profile</button>
+            </div>
+        </div>
+
+        <!-- Activity Stats -->
+        <div class="profile-card">
+            <h2>📊 Activity Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-number">{{ user.total_analyses }}</div>
+                    <div class="stat-label">Analyses</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">{{ user.total_analyses }}</div>
+                    <div class="stat-label">Reports</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">{{ user.days_active }}</div>
+                    <div class="stat-label">Days Active</div>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <a href="{{ url_for('analyze') }}" class="action-btn btn-analyze">Start New Analysis</a>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="profile-card full-width">
+            <h2>⚡ Quick Actions</h2>
+            <div class="quick-actions">
+                <a href="{{ url_for('analyze') }}" class="quick-action-btn">
+                    <span class="quick-action-icon">🔬</span>
+                    <span>New Analysis</span>
+                </a>
+                <a href="{{ url_for('history') }}" class="quick-action-btn">
+                    <span class="quick-action-icon">📊</span>
+                    <span>View History</span>
+                </a>
+                <a href="{{ url_for('faq') }}" class="quick-action-btn">
+                    <span class="quick-action-icon">❓</span>
+                    <span>View FAQ</span>
+                </a>
+                <a href="{{ url_for('home') }}#about-section" class="quick-action-btn">
+                    <span class="quick-action-icon">ℹ️</span>
+                    <span>About Us</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Security Settings -->
+        <div class="profile-card full-width">
+            <h2>🔒 Security & Privacy</h2>
+            <div class="info-row">
+                <span class="info-label">Password</span>
+                <span class="info-value">••••••••</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Two-Factor Authentication</span>
+                <span class="info-value" style="color: #dc3545;">Not Enabled</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Data Privacy</span>
+                <span class="info-value" style="color: #28a745;">Protected</span>
+            </div>
+            <div class="action-buttons">
+                <button class="action-btn btn-edit" onclick="alert('Change password feature coming soon!')">Change Password</button>
+                <button class="action-btn btn-edit" onclick="alert('Privacy settings coming soon!')">Privacy Settings</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

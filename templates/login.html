@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Skin Condition Analyzer{% endblock %}
+
+{% block extra_css %}
+<style>
+    .auth-container {
+        max-width: 450px;
+        margin: 60px auto;
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+
+    .auth-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .auth-header h2 {
+        font-size: 28px;
+        color: #2d3748;
+        margin-bottom: 10px;
+    }
+
+    .auth-header p {
+        color: #718096;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #4a5568;
+        font-weight: 500;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: all 0.3s;
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .auth-footer {
+        text-align: center;
+        margin-top: 20px;
+        color: #718096;
+    }
+
+    .auth-footer a {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .auth-footer a:hover {
+        text-decoration: underline;
+    }
+
+    .divider {
+        text-align: center;
+        margin: 20px 0;
+        color: #cbd5e0;
+        position: relative;
+    }
+
+    .divider::before,
+    .divider::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: 45%;
+        height: 1px;
+        background: #e2e8f0;
+    }
+
+    .divider::before {
+        left: 0;
+    }
+
+    .divider::after {
+        right: 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="auth-container">
+        <div class="auth-header">
+            <h2>Welcome Back</h2>
+            <p>Login to access your account</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('login') }}">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required placeholder="Enter your username">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Enter your password">
+            </div>
+
+            <button type="submit" class="submit-btn">Login</button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Don't have an account? <a href="{{ url_for('register') }}">Sign up here</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,404 @@
+{% extends "base.html" %}
+
+{% block title %}Report - Skin Condition Analyzer{% endblock %}
+
+{% block extra_css %}
+<style>
+    .report-container {
+        max-width: 1000px;
+        margin: 40px auto;
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+
+    .report-header {
+        text-align: center;
+        margin-bottom: 40px;
+        padding-bottom: 30px;
+        border-bottom: 2px solid #e2e8f0;
+    }
+
+    .report-header h1 {
+        font-size: 32px;
+        color: #2d3748;
+        margin-bottom: 10px;
+    }
+
+    .report-date {
+        color: #718096;
+        font-size: 14px;
+    }
+
+    .image-section {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .analyzed-image {
+        max-width: 400px;
+        max-height: 400px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+
+    .results-section {
+        margin-bottom: 40px;
+    }
+
+    .section-title {
+        font-size: 24px;
+        color: #2d3748;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .result-card {
+        background: white;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 20px;
+        transition: all 0.3s;
+    }
+
+    .result-card:hover {
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transform: translateY(-2px);
+    }
+
+    .result-card.primary {
+        border-color: #48bb78;
+        background: linear-gradient(to right, #f0fff4, white);
+    }
+
+    .result-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .result-title {
+        font-size: 22px;
+        font-weight: 600;
+        color: #2d3748;
+    }
+
+    .result-badge {
+        padding: 6px 15px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .badge-primary {
+        background: #48bb78;
+        color: white;
+    }
+
+    .badge-secondary {
+        background: #edf2f7;
+        color: #4a5568;
+    }
+
+    .confidence-section {
+        margin-bottom: 15px;
+    }
+
+    .confidence-text {
+        font-size: 28px;
+        font-weight: 700;
+        color: #667eea;
+        margin-bottom: 10px;
+    }
+
+    .confidence-bar {
+        width: 100%;
+        height: 12px;
+        background: #e2e8f0;
+        border-radius: 6px;
+        overflow: hidden;
+    }
+
+    .confidence-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        border-radius: 6px;
+        transition: width 0.5s ease;
+    }
+
+    .confidence-fill.primary {
+        background: linear-gradient(90deg, #48bb78, #38a169);
+    }
+
+    .result-description {
+        color: #4a5568;
+        line-height: 1.7;
+        padding-top: 15px;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    .action-btn {
+        flex: 1;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-decoration: none;
+    }
+
+    .btn-download {
+        background: #48bb78;
+        color: white;
+    }
+
+    .btn-download:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(72, 187, 120, 0.4);
+    }
+
+    .btn-new {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .btn-new:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .disclaimer {
+        background: #fff5f5;
+        border-left: 4px solid #fc8181;
+        padding: 20px;
+        margin-top: 30px;
+        border-radius: 8px;
+    }
+
+    .disclaimer-title {
+        color: #c53030;
+        font-weight: 600;
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+
+    .disclaimer-text {
+        color: #742a2a;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .no-results {
+        text-align: center;
+        padding: 60px 20px;
+    }
+
+    .no-results h2 {
+        font-size: 24px;
+        color: #4a5568;
+        margin-bottom: 20px;
+    }
+
+    @media (max-width: 768px) {
+        .report-container {
+            padding: 25px;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+        }
+
+        .result-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="report-container">
+        <div id="reportContent">
+            <div class="report-header">
+                <h1>📊 Analysis Report</h1>
+                <div class="report-date" id="reportDate"></div>
+            </div>
+
+            <div class="image-section">
+                <img id="analyzedImage" class="analyzed-image" alt="Analyzed skin condition" />
+            </div>
+
+            <div class="results-section">
+                <h2 class="section-title">🔬 Diagnosis Results</h2>
+                <div id="resultsContainer"></div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="action-btn btn-download" onclick="downloadReport()">
+                    <span>📄</span>
+                    <span>Download PDF Report</span>
+                </button>
+                <a href="{{ url_for('analyze') }}" class="action-btn btn-new">
+                    <span>🔄</span>
+                    <span>New Analysis</span>
+                </a>
+            </div>
+
+            <div class="disclaimer">
+                <div class="disclaimer-title">⚠️ Important Medical Disclaimer</div>
+                <div class="disclaimer-text">
+                    This AI-generated analysis is for informational and educational purposes only. 
+                    It is NOT a substitute for professional medical advice, diagnosis, or treatment. 
+                    The results should not be used as the sole basis for medical decisions. 
+                    Always consult a qualified dermatologist or healthcare provider for proper 
+                    diagnosis and treatment of any skin condition. If you notice any concerning 
+                    changes in your skin, seek immediate medical attention.
+                </div>
+            </div>
+        </div>
+
+        <div class="no-results" id="noResults" style="display: none;">
+            <h2>No Analysis Results Found</h2>
+            <p style="color: #718096; margin-bottom: 30px;">Please perform an analysis first</p>
+            <a href="{{ url_for('analyze') }}" class="action-btn btn-new" style="max-width: 300px; margin: 0 auto;">
+                <span>🔍</span>
+                <span>Start Analysis</span>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    let currentPredictions = null;
+    let currentImageData = null;
+
+    // Load results from sessionStorage
+    window.addEventListener('DOMContentLoaded', function() {
+        const resultsData = sessionStorage.getItem('analysisResults');
+        const imageData = sessionStorage.getItem('analysisImage');
+
+        if (resultsData && imageData) {
+            currentPredictions = JSON.parse(resultsData);
+            currentImageData = imageData;
+            displayResults();
+        } else {
+            document.getElementById('reportContent').style.display = 'none';
+            document.getElementById('noResults').style.display = 'block';
+        }
+    });
+
+    function displayResults() {
+        // Set date
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        document.getElementById('reportDate').textContent = `Generated on ${dateStr}`;
+
+        // Set image
+        document.getElementById('analyzedImage').src = currentImageData;
+
+        // Display results
+        const container = document.getElementById('resultsContainer');
+        container.innerHTML = '';
+
+        currentPredictions.forEach((pred, index) => {
+            const percentage = (pred.confidence * 100).toFixed(1);
+            const isPrimary = index === 0;
+            
+            const card = document.createElement('div');
+            card.className = `result-card ${isPrimary ? 'primary' : ''}`;
+            
+            card.innerHTML = `
+                <div class="result-header">
+                    <div class="result-title">${pred.class}</div>
+                    <div class="result-badge ${isPrimary ? 'badge-primary' : 'badge-secondary'}">
+                        ${isPrimary ? 'Primary Diagnosis' : 'Possible Condition'}
+                    </div>
+                </div>
+                <div class="confidence-section">
+                    <div class="confidence-text">${percentage}%</div>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill ${isPrimary ? 'primary' : ''}" style="width: ${percentage}%"></div>
+                    </div>
+                </div>
+                <div class="result-description">
+                    <strong>Description:</strong> ${pred.description || 'No description available.'}
+                </div>
+            `;
+            
+            container.appendChild(card);
+        });
+    }
+
+    async function downloadReport() {
+        if (!currentPredictions) {
+            alert('No analysis results to download');
+            return;
+        }
+
+        const btn = event.target.closest('button');
+        const originalHTML = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<span>⏳</span><span>Generating PDF...</span>';
+
+        try {
+            const response = await fetch('/download-report', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    predictions: currentPredictions,
+                    image: currentImageData
+                })
+            });
+
+            if (response.ok) {
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `skin_analysis_report_${new Date().getTime()}.pdf`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            } else {
+                alert('Failed to generate report. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Failed to download report. Please try again.');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = originalHTML;
+        }
+    }
+</script>
+{% endblock %}

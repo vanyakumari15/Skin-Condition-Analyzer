@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+venv/
+venv_skin/
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Environment
+.env
+
+# Database
+users.db
+*.db
+
+# Node
+frontend/node_modules/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Large model file (too big for GitHub)
+*.keras
+*.h5
